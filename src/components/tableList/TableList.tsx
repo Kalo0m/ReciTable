@@ -82,7 +82,7 @@ export function TableList() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-blue-950 text-white py-12 px-4 sm:px-6">
+    <div className="min-h-screen bg-gradient-to-br from-purple-800 via-purple-800 to-gray-900 text-white py-12 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl font-bold mb-2 text-white">
           Reci<span className="text-blue-300">Table</span>
@@ -100,7 +100,7 @@ export function TableList() {
               className="block"
             >
               <div className="simple-border-card">
-                <Card className="h-full border-0 bg-blue-950/80 hover:bg-blue-900/80 transition-all duration-300 overflow-hidden rounded-sm shadow-md">
+                <Card className="h-full border-0 bg-gray-800/70 hover:bg-blue-900/80 transition-all duration-300 overflow-hidden rounded-sm shadow-md">
                   <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-transparent via-blue-500/30 to-transparent opacity-50"></div>
 
                   <CardHeader className="pb-2">
