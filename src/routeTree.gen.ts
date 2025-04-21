@@ -12,12 +12,19 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
+import { Route as TableTableIdImport } from './routes/table/$tableId'
 
 // Create/Update Routes
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const TableTableIdRoute = TableTableIdImport.update({
+  id: '/table/$tableId',
+  path: '/table/$tableId',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -32,6 +39,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/table/$tableId': {
+      id: '/table/$tableId'
+      path: '/table/$tableId'
+      fullPath: '/table/$tableId'
+      preLoaderRoute: typeof TableTableIdImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -39,32 +53,37 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/table/$tableId': typeof TableTableIdRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/table/$tableId': typeof TableTableIdRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/table/$tableId': typeof TableTableIdRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/table/$tableId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/table/$tableId'
+  id: '__root__' | '/' | '/table/$tableId'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  TableTableIdRoute: typeof TableTableIdRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  TableTableIdRoute: TableTableIdRoute,
 }
 
 export const routeTree = rootRoute
@@ -77,11 +96,15 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/",
+        "/table/$tableId"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/table/$tableId": {
+      "filePath": "table/$tableId.tsx"
     }
   }
 }

@@ -1,0 +1,18 @@
+/* Simple border animation */
+.simple-border-card {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.simple-border-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  transition: border-color 0.3s ease;
+}
+
+.simple-border-card:hover::after {
+  border-color: #93c5fd; /* blue-300 */
+}

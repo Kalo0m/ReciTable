@@ -1,20 +1,14 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Button } from "~/components/ui/button";
+import { createFileRoute } from '@tanstack/react-router';
+import { TableList } from '~/components/tableList/TableList';
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute('/')({
   component: RouteComponent,
 });
 
 function RouteComponent() {
   return (
-    <div className="bg-background w-full h-screen flex items-center justify-center text-xl">
-      <Button
-        variant="default"
-        className="text-pink-500 bg-purple-500"
-        size={"lg"}
-      >
-        ReciTable
-      </Button>
-    </div>
+    <main className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-blue-950">
+      <TableList />
+    </main>
   );
 }
