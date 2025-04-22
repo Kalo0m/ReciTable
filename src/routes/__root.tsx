@@ -79,7 +79,7 @@ function RootComponent() {
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <ClerkProvider appearance={{ baseTheme: dark }}>
+    <ClerkProvider routerDebug appearance={{ baseTheme: dark }}>
       <html lang="en">
         <head>
           <HeadContent />
