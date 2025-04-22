@@ -7,8 +7,7 @@ export default defineConfig({
     appDirectory: 'src',
   },
   server: {
-    preset: 'cloudflare-pages',
-    unenv: cloudflare,
+    preset: 'vercel',
   },
   vite: {
     plugins: [
