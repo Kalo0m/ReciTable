@@ -1,6 +1,6 @@
-import { Link } from "@tanstack/react-router";
+import { Link, ReactNode } from '@tanstack/react-router';
 
-export function NotFound({ children }: { children?: any }) {
+export function NotFound({ children }: { children?: ReactNode }) {
   return (
     <div className="space-y-2 p-2 h-screen">
       <div className="text-gray-600 dark:text-gray-400">
