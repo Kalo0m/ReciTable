@@ -1,5 +1,5 @@
-import { createFileRoute, ErrorComponent } from '@tanstack/react-router';
-import { getFakeTableData, TableData } from '../../lib/fakeTableData'; // Use relative path
+import { createFileRoute } from '@tanstack/react-router';
+import { getFakeTableData } from '../../lib/fakeTableData'; // Use relative path
 import { InteractiveTable } from '../../components/InteractiveTable'; // Use relative path
 
 export const Route = createFileRoute('/table/$tableId')({
