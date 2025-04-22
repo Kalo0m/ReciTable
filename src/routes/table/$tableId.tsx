@@ -1,16 +1,27 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, ErrorComponent } from '@tanstack/react-router';
+import { getFakeTableData, TableData } from '../../lib/fakeTableData'; // Use relative path
+import { InteractiveTable } from '../../components/InteractiveTable'; // Use relative path
 
 export const Route = createFileRoute('/table/$tableId')({
+  loader: ({ params }) => {
+    const tableData = getFakeTableData(params.tableId);
+    if (!tableData) {
+      throw new Error(`Table with ID "${params.tableId}" not found.`);
+    }
+    return tableData;
+  },
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const { tableId } = Route.useParams();
+  const tableData = Route.useLoaderData();
+
   return (
     <main className="min-h-screen bg-background p-8">
-      <div className="border-2 p-4 w-full h-full bg-gray-900">
-        Table {tableId}
-      </div>
+      <h1 className="text-2xl font-bold mb-4 text-center text-white">
+        Table: {tableData.id}
+      </h1>
+      <InteractiveTable data={tableData} />
     </main>
   );
 }
