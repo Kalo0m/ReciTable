@@ -3,18 +3,22 @@ import {
   Outlet,
   Scripts,
   createRootRouteWithContext,
-} from '@tanstack/react-router';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
-import * as React from 'react';
-import type { QueryClient } from '@tanstack/react-query';
-import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary';
-import { NotFound } from '~/components/NotFound';
-import appCss from '~/styles/app.css?url';
-import { seo } from '~/utils/seo';
+} from '@tanstack/react-router'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import * as React from 'react'
+import type { QueryClient } from '@tanstack/react-query'
+import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary'
+import { NotFound } from '~/components/NotFound'
+import appCss from '~/styles/app.css?url'
+import { seo } from '~/utils/seo'
+import { ClerkProvider, SignIn } from '@clerk/tanstack-react-start'
+import { createServerFn } from '@tanstack/react-start'
+import { getAuth } from '@clerk/tanstack-react-start/server'
+import { getWebRequest } from '@tanstack/react-start/server'
 
 export const Route = createRootRouteWithContext<{
-  queryClient: QueryClient;
+  queryClient: QueryClient
 }>()({
   head: () => ({
     meta: [
@@ -54,36 +58,41 @@ export const Route = createRootRouteWithContext<{
     ],
   }),
   errorComponent: (props) => {
+    if (props.error.message === 'Not authenticated') {
+      return <SignIn />
+    }
     return (
       <RootDocument>
         <DefaultCatchBoundary {...props} />
       </RootDocument>
-    );
+    )
   },
   notFoundComponent: () => <NotFound />,
   component: RootComponent,
-});
+})
 
 function RootComponent() {
   return (
     <RootDocument>
       <Outlet />
     </RootDocument>
-  );
+  )
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body className="dark">
-        {children}
-        <TanStackRouterDevtools position="bottom-right" />
-        <ReactQueryDevtools buttonPosition="bottom-left" />
-        <Scripts />
-      </body>
-    </html>
-  );
+    <ClerkProvider>
+      <html lang="en">
+        <head>
+          <HeadContent />
+        </head>
+        <body className="dark">
+          {children}
+          <TanStackRouterDevtools position="bottom-right" />
+          <ReactQueryDevtools buttonPosition="bottom-left" />
+          <Scripts />
+        </body>
+      </html>
+    </ClerkProvider>
+  )
 }

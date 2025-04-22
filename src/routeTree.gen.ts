@@ -11,79 +11,149 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as IndexImport } from './routes/index'
-import { Route as TableTableIdImport } from './routes/table/$tableId'
+import { Route as SignUpImport } from './routes/sign-up'
+import { Route as SignInImport } from './routes/sign-in'
+import { Route as AuthedImport } from './routes/_authed'
+import { Route as AuthedIndexImport } from './routes/_authed/index'
+import { Route as AuthedTableTableIdImport } from './routes/_authed/table/$tableId'
 
 // Create/Update Routes
 
-const IndexRoute = IndexImport.update({
-  id: '/',
-  path: '/',
+const SignUpRoute = SignUpImport.update({
+  id: '/sign-up',
+  path: '/sign-up',
   getParentRoute: () => rootRoute,
 } as any)
 
-const TableTableIdRoute = TableTableIdImport.update({
+const SignInRoute = SignInImport.update({
+  id: '/sign-in',
+  path: '/sign-in',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthedRoute = AuthedImport.update({
+  id: '/_authed',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthedIndexRoute = AuthedIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthedRoute,
+} as any)
+
+const AuthedTableTableIdRoute = AuthedTableTableIdImport.update({
   id: '/table/$tableId',
   path: '/table/$tableId',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => AuthedRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
+    '/_authed': {
+      id: '/_authed'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthedImport
       parentRoute: typeof rootRoute
     }
-    '/table/$tableId': {
-      id: '/table/$tableId'
+    '/sign-in': {
+      id: '/sign-in'
+      path: '/sign-in'
+      fullPath: '/sign-in'
+      preLoaderRoute: typeof SignInImport
+      parentRoute: typeof rootRoute
+    }
+    '/sign-up': {
+      id: '/sign-up'
+      path: '/sign-up'
+      fullPath: '/sign-up'
+      preLoaderRoute: typeof SignUpImport
+      parentRoute: typeof rootRoute
+    }
+    '/_authed/': {
+      id: '/_authed/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof AuthedIndexImport
+      parentRoute: typeof AuthedImport
+    }
+    '/_authed/table/$tableId': {
+      id: '/_authed/table/$tableId'
       path: '/table/$tableId'
       fullPath: '/table/$tableId'
-      preLoaderRoute: typeof TableTableIdImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof AuthedTableTableIdImport
+      parentRoute: typeof AuthedImport
     }
   }
 }
 
 // Create and export the route tree
 
+interface AuthedRouteChildren {
+  AuthedIndexRoute: typeof AuthedIndexRoute
+  AuthedTableTableIdRoute: typeof AuthedTableTableIdRoute
+}
+
+const AuthedRouteChildren: AuthedRouteChildren = {
+  AuthedIndexRoute: AuthedIndexRoute,
+  AuthedTableTableIdRoute: AuthedTableTableIdRoute,
+}
+
+const AuthedRouteWithChildren =
+  AuthedRoute._addFileChildren(AuthedRouteChildren)
+
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/table/$tableId': typeof TableTableIdRoute
+  '': typeof AuthedRouteWithChildren
+  '/sign-in': typeof SignInRoute
+  '/sign-up': typeof SignUpRoute
+  '/': typeof AuthedIndexRoute
+  '/table/$tableId': typeof AuthedTableTableIdRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/table/$tableId': typeof TableTableIdRoute
+  '/sign-in': typeof SignInRoute
+  '/sign-up': typeof SignUpRoute
+  '/': typeof AuthedIndexRoute
+  '/table/$tableId': typeof AuthedTableTableIdRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/': typeof IndexRoute
-  '/table/$tableId': typeof TableTableIdRoute
+  '/_authed': typeof AuthedRouteWithChildren
+  '/sign-in': typeof SignInRoute
+  '/sign-up': typeof SignUpRoute
+  '/_authed/': typeof AuthedIndexRoute
+  '/_authed/table/$tableId': typeof AuthedTableTableIdRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/table/$tableId'
+  fullPaths: '' | '/sign-in' | '/sign-up' | '/' | '/table/$tableId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/table/$tableId'
-  id: '__root__' | '/' | '/table/$tableId'
+  to: '/sign-in' | '/sign-up' | '/' | '/table/$tableId'
+  id:
+    | '__root__'
+    | '/_authed'
+    | '/sign-in'
+    | '/sign-up'
+    | '/_authed/'
+    | '/_authed/table/$tableId'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  TableTableIdRoute: typeof TableTableIdRoute
+  AuthedRoute: typeof AuthedRouteWithChildren
+  SignInRoute: typeof SignInRoute
+  SignUpRoute: typeof SignUpRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  TableTableIdRoute: TableTableIdRoute,
+  AuthedRoute: AuthedRouteWithChildren,
+  SignInRoute: SignInRoute,
+  SignUpRoute: SignUpRoute,
 }
 
 export const routeTree = rootRoute
@@ -96,15 +166,31 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/",
-        "/table/$tableId"
+        "/_authed",
+        "/sign-in",
+        "/sign-up"
       ]
     },
-    "/": {
-      "filePath": "index.tsx"
+    "/_authed": {
+      "filePath": "_authed.tsx",
+      "children": [
+        "/_authed/",
+        "/_authed/table/$tableId"
+      ]
     },
-    "/table/$tableId": {
-      "filePath": "table/$tableId.tsx"
+    "/sign-in": {
+      "filePath": "sign-in.tsx"
+    },
+    "/sign-up": {
+      "filePath": "sign-up.tsx"
+    },
+    "/_authed/": {
+      "filePath": "_authed/index.tsx",
+      "parent": "/_authed"
+    },
+    "/_authed/table/$tableId": {
+      "filePath": "_authed/table/$tableId.tsx",
+      "parent": "/_authed"
     }
   }
 }
