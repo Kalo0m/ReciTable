@@ -13,9 +13,7 @@ import { NotFound } from '~/components/NotFound'
 import appCss from '~/styles/app.css?url'
 import { seo } from '~/utils/seo'
 import { ClerkProvider, SignIn } from '@clerk/tanstack-react-start'
-import { createServerFn } from '@tanstack/react-start'
-import { getAuth } from '@clerk/tanstack-react-start/server'
-import { getWebRequest } from '@tanstack/react-start/server'
+import { dark } from '@clerk/themes'
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient
@@ -81,7 +79,7 @@ function RootComponent() {
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider appearance={{ baseTheme: dark }}>
       <html lang="en">
         <head>
           <HeadContent />
