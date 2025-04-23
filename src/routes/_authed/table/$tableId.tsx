@@ -1,10 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { getFakeTableData } from '~/lib/fakeTableData' // Use relative path
+import { getTable } from '~/api/tables'
 import { InteractiveTable } from '~/components/InteractiveTable' // Use relative path
 
 export const Route = createFileRoute('/_authed/table/$tableId')({
-  loader: ({ params }) => {
-    const tableData = getFakeTableData(params.tableId)
+  loader: async ({ params }) => {
+    const tableData = await getTable({ data: { tableId: params.tableId } })
     if (!tableData) {
       throw new Error(`Table with ID "${params.tableId}" not found.`)
     }
@@ -14,14 +14,12 @@ export const Route = createFileRoute('/_authed/table/$tableId')({
 })
 
 function RouteComponent() {
-  const tableData = Route.useLoaderData()
+  const { structuredTable, slug } = Route.useLoaderData()
 
   return (
     <main className="min-h-screen bg-background p-8">
-      <h1 className="text-2xl font-bold mb-4 text-center text-white">
-        Table: {tableData.id}
-      </h1>
-      <InteractiveTable data={tableData} />
+      <h1 className="text-2xl font-bold mb-4 text-center text-white">{slug}</h1>
+      <InteractiveTable data={structuredTable} />
     </main>
   )
 }
