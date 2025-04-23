@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import type { TableStructure } from '../lib/fakeTableData'
 
 import { Table, TableBody, TableCell, TableRow } from '~/components/ui/table'
 import { Input } from '~/components/ui/input'
@@ -7,8 +6,9 @@ import { Button } from '~/components/ui/button'
 import { cn } from '~/lib/utils'
 import { checkAnswer, ValidationResult } from '~/utils/table'
 import { shouldBeUnreachable } from '~/utils/types'
+import type { TableStructure } from '~/types/tables'
 
-interface InteractiveTableProps {
+type InteractiveTableProps = {
   data: TableStructure
   validationThreshold?: number
 }
